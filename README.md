@@ -2,9 +2,14 @@
 
 This project explores the performance differences between the Adam and AdamW optimization algorithms in the context of a convolutional neural network (CNN) model used for classifying the MNIST dataset.
 
+## Team Members
+
+d11949006 WEI-LUN CHEN
+r11921118 YONG-TAI QIU  
+
 ## Experiment Setup
 
-We are interested in comparing different optimizers and their settings.
+We are interested in comparing different optimizers and their settings.  
 The main focus of our investigation is on the following setups:
 
 + **Adam optimizer** vs **Adam optimizer without bias correction**
@@ -20,7 +25,7 @@ The main focus of our investigation is on the following setups:
 The CNN model was trained for 100 epochs with an initial learning rate of 0.001.
 All implementations used the PyTorch package.
 
-## Team Members
+## Results
 
-d11949006 WEI-LUN CHEN
-r11921118 YONG-TAI QIU
+![Training Loss](/assets/training_loss.png)
+![Validation Loss](/assets/validation_loss.png)
