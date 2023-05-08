@@ -4,7 +4,7 @@ This project explores the performance differences between the Adam and AdamW opt
 
 ## Team Members
 
-d11949006 WEI-LUN CHEN
+d11949006 WEI-LUN CHEN  
 r11921118 YONG-TAI QIU  
 
 ## Experiment Setup
