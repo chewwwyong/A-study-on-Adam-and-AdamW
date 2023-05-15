@@ -31,4 +31,4 @@ All implementations used the PyTorch package.
 
 > TEX file and generated PDF are in the [reports](/reports/) folder
 
-![results](/assets/assets/merge_results.png)
+![results](/assets/merge_results.png)
