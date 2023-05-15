@@ -27,5 +27,7 @@ All implementations used the PyTorch package.
 
 ## Results
 
+> TEX file and generated PDF are in the [reports](/reports/) folder
+
 ![Training Loss](/assets/training_loss.png)
 ![Validation Loss](/assets/validation_loss.png)
