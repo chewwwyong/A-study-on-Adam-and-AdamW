@@ -1,0 +1,7 @@
+__pycache__
+data/MNIST
+
+MNIST.png
+pytorch-adam.png
+pytorch-adamw.png
+adamL2-adamw.png
