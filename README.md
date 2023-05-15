@@ -17,17 +17,17 @@ The main focus of our investigation is on the following setups:
 
 |   Optimiser    |                     Parameter Settings                     |
 | :------------: | :--------------------------------------------------------: |
-|    **Adam**    |  lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0   |
-| **CustomAdam** |  lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0   |
-|    **Adam**    | lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01 |
-|   **AdamW**    | lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01 |
+|    **Adam**    |  lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0   |
+| **CustomAdam** |  lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0   |
+|    **Adam**    | lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01 |
+|   **AdamW**    | lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01 |
 
-The CNN model was trained for 100 epochs with an initial learning rate of 0.001.
+The CNN model was trained for 100 epochs with an initial learning rate (lr) of 1e-3, 1e-4, and 1e-5.
 All implementations used the PyTorch package.
 
 ## Results
 
 > TEX file and generated PDF are in the [reports](/reports/) folder
 
-![Training Loss](/assets/training_loss.png)
-![Validation Loss](/assets/validation_loss.png)
+![Training Loss](/assets/1e-03-training_loss.png)
+![Validation Loss](/assets/1e-03-validation_loss.png)
