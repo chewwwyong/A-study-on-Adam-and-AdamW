@@ -15,12 +15,14 @@ The main focus of our investigation is on the following setups:
 + **Adam optimizer** vs **Adam optimizer without bias correction**
 + **Adam optimizer with L2 regularization** vs **AdamW optimizer**
 
-|   Optimiser    |                     Parameter Settings                     |
+|   Optimizers    |                     Parameter Settings                     |
 | :------------: | :--------------------------------------------------------: |
 |    **Adam**    |  lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0   |
-| **CustomAdam** |  lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0   |
+| **CustomAdam*** |  lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0   |
 |    **Adam**    | lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01 |
 |   **AdamW**    | lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01 |
+
+We implemented a new optimizer called **CustomAdam**, which removes the bias correction present in the original Adam optimizer.
 
 The CNN model was trained for 100 epochs with an initial learning rate (lr) of 1e-3, 1e-4, and 1e-5.
 All implementations used the PyTorch package.
@@ -29,5 +31,4 @@ All implementations used the PyTorch package.
 
 > TEX file and generated PDF are in the [reports](/reports/) folder
 
-![Training Loss](/assets/1e-03-training_loss.png)
-![Validation Loss](/assets/1e-03-validation_loss.png)
+![results](/assets/assets/merge_results.png)
