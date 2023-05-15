@@ -1,9 +1,12 @@
 import matplotlib.pyplot as plt
+plt.style.use('seaborn-whitegrid')
+import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.init as init
 
-from tqdm import trange
+from tqdm import trange,tqdm
 from torch.utils.data import Dataset, DataLoader
 from torch.optim import Adam, AdamW
 from torchvision import datasets
@@ -105,50 +108,70 @@ if __name__ == '__main__':
     test_dataloader = DataLoader(test_data, batch_size=64)
 
     # Create model, loss function, and optimizer
-    model1 = CNN()  
-    model1.apply(weight_init)
-    model2 = CNN()  
-    model1.apply(weight_init)
-    model3 = CNN()  
-    model1.apply(weight_init)
-    model4 = CNN()  
-    model4.apply(weight_init)
-
     criterion = nn.CrossEntropyLoss()
+    lr_list = [1e-3, 1e-4, 1e-5]
+    for lr in tqdm(lr_list):
 
-    optimizer1 = Adam(model1.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)                     # Original
-    optimizer2 = NoBiasCorrectionAdam(model2.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)     # Original w/o bias correction
-    optimizer3 = Adam(model3.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01)                  # Oringinal w/ L2 regularization
-    optimizer4 = AdamW(model4.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01)                 # AdamW weight decay
+        model1 = CNN()  
+        model1.apply(weight_init)
+        model2 = CNN()  
+        model1.apply(weight_init)
+        model3 = CNN()  
+        model1.apply(weight_init)
+        model4 = CNN()  
+        model4.apply(weight_init)
 
-    num_epochs = 100
+        
+        optimizer1 = Adam(model1.parameters(), lr=lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)                     # Original
+        optimizer2 = NoBiasCorrectionAdam(model2.parameters(), lr=lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)     # Original w/o bias correction
+        optimizer3 = Adam(model3.parameters(), lr=lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01)                  # Oringinal w/ L2 regularization
+        optimizer4 = AdamW(model4.parameters(), lr=lr, betas=(0.9, 0.999), eps=1e-08, weight_decay=0.01)                 # AdamW weight decay
 
-    train_loss1, val_loss1 = train(model1, train_dataloader, criterion, optimizer1, num_epochs)
-    train_loss2, val_loss2 = train(model2, train_dataloader, criterion, optimizer2, num_epochs)
-    train_loss3, val_loss3 = train(model3, train_dataloader, criterion, optimizer3, num_epochs)
-    train_loss4, val_loss4 = train(model4, train_dataloader, criterion, optimizer4, num_epochs)  
+        num_epochs = 100
 
-    # Plot training loss
-    plt.plot(train_loss1, label='Adam')
-    plt.plot(train_loss2, label='Adam w/o bias correction')
-    plt.plot(train_loss3, label='Adam w/ L2 regularization')
-    plt.plot(train_loss4, label='AdamW weight decay')
-    plt.legend()
-    plt.title('Training Loss')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.savefig('assets/training_loss.png')
+        train_loss1, val_loss1 = train(model1, train_dataloader, criterion, optimizer1, num_epochs)
+        train_loss2, val_loss2 = train(model2, train_dataloader, criterion, optimizer2, num_epochs)
+        train_loss3, val_loss3 = train(model3, train_dataloader, criterion, optimizer3, num_epochs)
+        train_loss4, val_loss4 = train(model4, train_dataloader, criterion, optimizer4, num_epochs)  
 
-    # Plot validation loss
-    plt.clf()
-    plt.plot(val_loss1, label='Adam')
-    plt.plot(val_loss2, label='Adam w/o bias correction')
-    plt.plot(val_loss3, label='Adam w/ L2 regularization')
-    plt.plot(val_loss4, label='AdamW weight decay')
-    plt.legend()
-    plt.title('Validation Loss')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.savefig('assets/validation_loss.png')
+        # Plot training loss
+        plt.clf()
+        plt.plot(train_loss1, label='Adam')
+        plt.plot(train_loss2, label='Adam w/o bias correction')
+        plt.plot(train_loss3, label='Adam w/ L2 regularization')
+        plt.plot(train_loss4, label='AdamW weight decay')
+        plt.legend()
+        plt.title(f'Training Loss ({lr:.0e})')
+        plt.xlabel('Epoch')
+        plt.xticks(np.arange(0, num_epochs+1, 10))
+        plt.ylabel('Loss')
+        plt.savefig(f'assets/{lr:.0e}-training_loss.png')
 
+        # Plot validation loss
+        plt.clf()
+        plt.plot(val_loss1, label='Adam')
+        plt.plot(val_loss2, label='Adam w/o bias correction')
+        plt.plot(val_loss3, label='Adam w/ L2 regularization')
+        plt.plot(val_loss4, label='AdamW weight decay')
+        plt.legend()
+        plt.title(f'Validation Loss ({lr:.0e})')
+        plt.xlabel('Epoch')
+        plt.xticks(np.arange(0, num_epochs+1, 10))
+        plt.ylabel('Loss')
+        plt.savefig(f'assets/{lr:.0e}-validation_loss.png')
 
+        # Save results
+        trainDF = pd.DataFrame({
+            'Adam': train_loss1,
+            'Adam w/o bias correction': train_loss2,
+            'Adam w/ L2 regularization': train_loss3,
+            'AdamW weight decay': train_loss4
+        })
+        trainDF.to_csv(f'runs/{lr:.0e}-training_loss.csv', index=False)
+        validationDF = pd.DataFrame({
+            'Adam': val_loss1,
+            'Adam w/o bias correction': val_loss2,
+            'Adam w/ L2 regularization': val_loss3,
+            'AdamW weight decay': val_loss4
+        })
+        validationDF.to_csv(f'runs/{lr:.0e}-validation_loss.csv', index=False)
