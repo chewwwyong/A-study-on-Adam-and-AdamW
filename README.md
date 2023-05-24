@@ -30,5 +30,5 @@ All implementations used the PyTorch package.
 ## Results
 
 > TEX file and generated PDF are in the [reports](/reports/) folder
-
+![merge_all_result_adam_adamW_with_diff_weight_decay](/assets/experiment2/merge_all_result.png)
 ![results](/assets/merge_results.png)
