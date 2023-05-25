@@ -69,7 +69,8 @@ def train(model, train_dataloader, criterion, optimizer, num_epochs=100):
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-
+            
+            # Sum accuracy
             predicted = torch.max(outputs.data, 1)[1]
             total_train += len(labels)
             correct_train += (predicted == labels).float().sum()
@@ -77,6 +78,7 @@ def train(model, train_dataloader, criterion, optimizer, num_epochs=100):
             # Sum loss
             train_loss += loss.item()
 
+        # Save accuracy
         train_accuracy = 100 * correct_train / float(total_train)
         train_accuracy_list.append(train_accuracy.cpu())
         
@@ -93,12 +95,15 @@ def train(model, train_dataloader, criterion, optimizer, num_epochs=100):
                 outputs = model(images).to(device)
                 loss = criterion(outputs, labels)
 
+                # Sum accuracy
                 predicted = torch.max(outputs.data, 1)[1]
                 total_test += len(labels)
                 correct_test += (predicted == labels).float().sum()
+                
                 # Sum loss
                 val_loss += loss.item()
 
+        # Save accuracy
         val_accuracy = 100 * correct_test / float(total_test)
         val_accuracy_list.append(val_accuracy.cpu())
         
@@ -126,11 +131,13 @@ if __name__ == '__main__':
     )
 
     # Create data loaders.
-    train_dataloader = DataLoader(training_data, batch_size=32)
-    test_dataloader = DataLoader(test_data, batch_size=32)
+    train_dataloader = DataLoader(training_data, batch_size=64)
+    test_dataloader = DataLoader(test_data, batch_size=64)
 
+    # Get device
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"device: {device}")
+    
     # Create model, loss function, and optimizer
     criterion = nn.CrossEntropyLoss()
     train_loss1s, val_loss1s, train_acc1s, val_acc1s = [], [], [], []
@@ -162,25 +169,28 @@ if __name__ == '__main__':
         train_acc2s.append(train_acc2)
         val_acc2s.append(val_acc2)
         
-        # Save results
+        # Save training loss results
         trainLossDF = pd.DataFrame({
             'Adam': train_loss1,
             'AdamW': train_loss2,
         })
         trainLossDF.to_csv(f'runs/experiment2/weight_decay={weight_decay:.0e}-training_loss.csv', index=False)
         
+        # Save training accuracy results
         trainAccDF = pd.DataFrame({
             'Adam': train_acc1,
             'AdamW': train_acc2,
         })
         trainAccDF.to_csv(f'runs/experiment2/weight_decay={weight_decay:.0e}-training_accuracy.csv', index=False)
         
+        # Save validation loss results
         validationLossDF = pd.DataFrame({
             'Adam': val_loss1,
             'AdamW': val_loss2
         })
         validationLossDF.to_csv(f'runs/experiment2/weight_decay={weight_decay:.0e}-validation_loss.csv', index=False)
         
+        # Save validation accuracy results
         validationAccDF = pd.DataFrame({
             'Adam': val_acc1,
             'AdamW': val_acc2,
@@ -204,7 +214,7 @@ if __name__ == '__main__':
     # Plot AdamW training loss with different weight decay
     plt.clf()
     for i, train_loss2 in enumerate(train_loss2s):
-        plt.plot(train_loss2, label=f'Weight_Decay={weight_decays[i]}')
+        plt.plot(train_loss2, label=f'AdamW_Weight_Decay={weight_decays[i]}')
     plt.legend()
     plt.title(f'AdamW Training Loss with LR={learning_rate} and Different Weight Decay')
     plt.xlabel('Epoch')
@@ -216,7 +226,7 @@ if __name__ == '__main__':
     # Plot Adam training accuracy with different weight decay
     plt.clf()
     for i, train_acc1 in enumerate(train_acc1s):
-        plt.plot(train_acc1, label=f'Weight_Decay={weight_decays[i]}')
+        plt.plot(train_acc1, label=f'Adam_Weight_Decay={weight_decays[i]}')
     plt.legend()
     plt.title(f'Adam Training Accuracy with LR={learning_rate} and Different Weight Decay')
     plt.xlabel('Epoch')
@@ -228,7 +238,7 @@ if __name__ == '__main__':
     # Plot AdamW training accuracy with different weight decay
     plt.clf()
     for i, train_acc2 in enumerate(train_acc2s):
-        plt.plot(train_acc2, label=f'Weight_Decay={weight_decays[i]}')
+        plt.plot(train_acc2, label=f'AdamW_Weight_Decay={weight_decays[i]}')
     plt.legend()
     plt.title(f'AdamW Training Accuracy with LR={learning_rate} and Different Weight Decay')
     plt.xlabel('Epoch')
@@ -254,7 +264,7 @@ if __name__ == '__main__':
     # Plot AdamW validation loss with different weight decay
     plt.clf()
     for i, val_loss2 in enumerate(val_loss2s):
-        plt.plot(val_loss2, label=f'Weight_Decay={weight_decays[i]}')
+        plt.plot(val_loss2, label=f'AdamW_Weight_Decay={weight_decays[i]}')
     plt.legend()
     plt.title(f'AdamW Validation Loss with LR={learning_rate} and Different Weight Decay')
     plt.xlabel('Epoch')
@@ -266,7 +276,7 @@ if __name__ == '__main__':
     # Plot Adam validation accuracy with different weight decay
     plt.clf()
     for i, val_acc1 in enumerate(val_acc1s):
-        plt.plot(val_acc1, label=f'Weight_Decay={weight_decays[i]}')
+        plt.plot(val_acc1, label=f'Adam_Weight_Decay={weight_decays[i]}')
     plt.legend()
     plt.title(f'Adam Validation Accuracy with LR={learning_rate} and Different Weight Decay')
     plt.xlabel('Epoch')
@@ -278,7 +288,7 @@ if __name__ == '__main__':
     # Plot AdamW validation accuracy with different weight decay
     plt.clf()
     for i, val_acc2 in enumerate(val_acc2s):
-        plt.plot(val_acc2, label=f'Weight_Decay={weight_decays[i]}')
+        plt.plot(val_acc2, label=f'AdamW_Weight_Decay={weight_decays[i]}')
     plt.legend()
     plt.title(f'AdamW Validation Accuracy with LR={learning_rate} and Different Weight Decay')
     plt.xlabel('Epoch')
