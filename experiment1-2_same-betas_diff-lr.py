@@ -193,7 +193,7 @@ if __name__ == '__main__':
             
             # Save classification_report2
             classification_report2_DF = pd.DataFrame(classification_report2).transpose()
-            classification_report2_DF.to_csv(f'runs/experiment1-2/adam_without_bias_correction-{lr:.0e}-{betas}-classification_report1.csv', index=True)
+            classification_report2_DF.to_csv(f'runs/experiment1-2/adam_without_bias_correction-{lr:.0e}-{betas}-classification_report.csv', index=True)
 
             # Save training loss results
             trainLossDF = pd.DataFrame({

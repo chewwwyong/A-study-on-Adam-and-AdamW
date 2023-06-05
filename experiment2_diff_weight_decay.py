@@ -191,7 +191,7 @@ if __name__ == '__main__':
         
         # Save classification_report2
         classification_report2_DF = pd.DataFrame(classification_report2).transpose()
-        classification_report2_DF.to_csv(f'runs/experiment2/admaw-weight_decay={weight_decay:.0e}-classification_report.csv', index=True)
+        classification_report2_DF.to_csv(f'runs/experiment2/adamw-weight_decay={weight_decay:.0e}-classification_report.csv', index=True)
 
         # Save training loss results
         trainLossDF = pd.DataFrame({
