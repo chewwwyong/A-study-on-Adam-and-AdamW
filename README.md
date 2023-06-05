@@ -25,7 +25,7 @@ We implemented a new optimizer called **CustomAdam**, which removes the bias cor
 The CNN model was trained for 100 epochs with different learning rates (**learning_rates**=[1e-3, 1e-4, 1e-5]) and different betas (**betas**=[(0.9, 0.999), (0.99, 0.999)])
 
 We want to know that:
-1. Under the different lr, same beta, whether with or without bias correction will affect the accuracy? (Experiment1-1)
+1. Under the same lr, different beta, whether with or without bias correction will affect the accuracy? (Experiment1-1)
 2. Under the same beta, different lr, whether with or without bias correction will affect the accuracy? (Experiment1-2)
 
 + **Experiment 2**
