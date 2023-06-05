@@ -47,6 +47,11 @@ We undertook the training with three distinct learning rates $\left(\gamma\right
 Finally, we integrated weight decay in the Adam with L2 regularization and the AdamW optimizers, standardizing the decay factor $\left(\lambda\right)$ to 0.01 in both instances. This facilitated us to draw direct comparisons between the effects of L2 regularization and weight decay decoupling on the model's performance.\par
 Through this experimental design, we were able to systematically investigate the comparative impacts of bias correction and different weight decay methods on the performance of a CNN model in image classification tasks.
 
+
+
+\section{Results}
+Table 1 shows our experimental settings. In Experiment 1-1 and Experiment 1-2, we want to know whether or not bias correction will affect the accuracy under different learning rates and different betas? \par In Experiment 2, I want to know whether it will affect the accuracy of Adam and AdamW under different lambda (weight decay)?
+
 \begin{table*}[ht!]
 \centering
 \caption{Experimental Settings}
@@ -57,19 +62,71 @@ Through this experimental design, we were able to systematically investigate the
 \textbf{Hyperparameter} & \textbf{Exp1} & \textbf{Exp2} \\
 \hline
 Optimizer & \makecell{Adam \\ Adam w/o Bias Correction} & \makecell{Adam (L2) \\ AdamW} \\
+\hline
 Learning Rate ($\gamma$) & 1e-3, 1e-4, 1e-5 & 1e-4 \\
+\hline
 \makecell{Beta Parameters \\ ($\beta_1$, $\beta_2$)} & (0.9, 0.999), (0.99, 0.999) & (0.9, 0.999) \\
+\hline
 Epsilon ($\epsilon$) & 1e-8 & 1e-8 \\
+\hline
 Decay Factor ($\lambda$) & - & 1e-2, 1e-3, 1e-4 \\
 \hline
 \end{tabularx}
 \label{tab:exp_settings}
 \end{table*}
 
-\section{Results}
+Figure 1 shows the results of Experiment 1-1, represents the verification accuracy of Adam with or without bias correction under the same learning rate and different betas. \par
+
+It can be found that under same learning rate, different betas, the with or without of bias correction has little effect on the accuracy rate.\par
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=\linewidth] {adam_with_and_without_bias_correction-1e-04-validation_accuracy.pdf}
+\caption{Adam with and without bias correction with learning rate 1e-04 and different betas validation accuracy}
+\label{adam_with_and_without_bias_correction-1e-04-validation_accuracy}
+\end{figure}
+
+We only show results for learning rate 1e-4 here, but in fact learning rates 1e-3, 1e-5 have similar results.\par
+
+Figure 2 shows the results of Experiment 1-2, represents the verification accuracy of Adam with or without bias correction under the same betas and different learning rate. \par 
+It can be found that under same betas, different learning rate, the with or without of bias correction has little effect on the accuracy rate.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=\linewidth] {adam_with_and_without_bias_correction-(0.9, 0.999)-validation_accuracy.pdf}
+\caption{Adam with and without bias correction with betas (0.9, 0.999) and different learning rate validation accuracy}
+\label{adam_with_and_without_bias_correction-(0.9, 0.999)-validation_accuracy}
+\end{figure}
+
+We only show results for betas (0.9, 0.999) here, but in fact betas (0.99, 0.999) have similar results.\par
+
+
+Figure 3 shows the results of Experiment 2, under different lambdas(weight decay), whether Adam with L2 and adamW will affect the accuracy? \par
+
+We can found in Experiment 2 that if Adam's L2 is larger, the accuracy rate will be smaller. In addition, the Adam+L2 scheme will lead to Suboptimal optimization process, and the L2 size of AdamW seems to have little effect on the accuracy.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=\linewidth] {adam_and_adamw_diff_weight_decay-validation_accuracy.pdf}
+\caption{Adam and AdamW with different weight decay validation accuracy}
+\label{adam_and_adamw_diff_weight_decay-validation_accuracy}
+\end{figure}
+
+
 
 \section{Discussion and Conclusions}
 
+Let's break down and discuss each experiment individually: \par
+
+\textbf{Experiment 1-1 and Experiment 1-2:}
+The results indicate that the presence or absence of bias correction does not significantly impact the accuracy rate, regardless of the learning rate and betas used. This suggests that, in these experiments, bias correction does not play a crucial role in improving the model's accuracy. It could imply that bias correction may not be essential in certain contexts or that other factors overshadow its influence on model performance. Further research is necessary to explore the underlying reasons for this observation. \par
+
+\textbf{Experiment 2:}
+The findings from Experiment 2 reveal that higher L2 regularization parameter in Adam leads to lower accuracy rates. This could be attributed to the stronger constraint imposed on the model's weights by larger L2 regularization, limiting the model's expressive power and consequently affecting its performance.  The weight decay and L2 regularization may reach equivalence under some conditions still are slightly different concepts and should be treated differently otherwise can lead to unexplained performance degradation or other practical problems.
+
+However, the optimal value of the regularization parameter depends on the specific dataset and problem at hand. Therefore, in practical applications, fine-tuning the regularization parameter may be necessary to achieve optimal performance.
+
+In summary, these conclusions highlight the effects of bias correction and L2 regularization in different scenarios. Further investigation is needed to gain a deeper understanding of these observations and to determine the generalizability of the findings across various datasets and models.
 
 \bibliographystyle{ieee}
 % \bibliography{egbib}
