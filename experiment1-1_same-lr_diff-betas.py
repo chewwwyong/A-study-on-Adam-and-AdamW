@@ -227,13 +227,13 @@ if __name__ == '__main__':
             plt.clf()
             fig, ax = plot_confusion_matrix(conf_mat=confusion_matrix1)
             plt.title("Confusion Matrix")
-            plt.savefig(f"assets/experiment1-1/adam_with_and_without_bias_correction-{lr:.0e}-{betas}-confusion_matrix.png")
+            plt.savefig(f"assets/experiment1-1/adam_with_bias_correction-{lr:.0e}-{betas}-confusion_matrix.png")
 
             # Plot confusion_matrix2 figure 
             plt.clf()
             fig, ax = plot_confusion_matrix(conf_mat=confusion_matrix2)
             plt.title("Confusion Matrix")
-            plt.savefig(f"assets/experiment1-1/adam_with_and_without_bias_correction-{lr:.0e}-{betas}-confusion_matrix.png")
+            plt.savefig(f"assets/experiment1-1/adam_without_bias_correction-{lr:.0e}-{betas}-confusion_matrix.png")
 
 
         ############  Plot Adam with & without Bias Correction Training Loss & Accuracy  ############
